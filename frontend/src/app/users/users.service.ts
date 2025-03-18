@@ -1,49 +1,66 @@
 import { Injectable } from '@angular/core';
+import { API_URL } from '../config';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserService {
-  private apiUrl = 'http://localhost:5100/users'; // NestJS API
+export class UsersService {
+  constructor() {}
 
-  /** ✅ Get all users */
+  // 🔹 Get All Users
   async getUsers() {
-    const response = await fetch(this.apiUrl);
-    return await response.json();
+    try {
+      const response = await fetch(`${API_URL}/users`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
   }
 
-  /** ✅ Get user by ID */
-  async getUserById(id: string) {
-    const response = await fetch(`${this.apiUrl}/${id}`);
-    return await response.json();
+  // 🔹 Create User
+  async addUser(user: { name: string; email: string; bio: string }) {
+    try {
+      const response = await fetch(`${API_URL}/users`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
   }
 
-  /** ✅ Create user */
-  async createUser(user: { name: string; email: string; bio: string }) {
-    const response = await fetch(this.apiUrl, {
-      method: 'POST',
+  // 🔹 Update User
+  async updateUser(
+    id: string,
+    user: { name: string; email: string; bio: string }
+  ) {
+    const response = await fetch(`${API_URL}/users/${id}`, {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),
     });
-    return await response.json();
+    return response.json();
   }
 
-  /** ✅ Update user */
-  async updateUser(
-    id: string,
-    userData: { name?: string; email?: string; bio?: string }
-  ) {
-    const response = await fetch(`${this.apiUrl}/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
-    });
-    return await response.json();
-  }
-
-  /** ✅ Delete user */
+  // 🔹 Delete User
   async deleteUser(id: string) {
-    const response = await fetch(`${this.apiUrl}/${id}`, { method: 'DELETE' });
-    return await response.json();
+    await fetch(`${API_URL}/users/${id}`, { method: 'DELETE' });
   }
 }

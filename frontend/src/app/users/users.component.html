@@ -1,26 +1,28 @@
-<h2>User Management</h2>
+<div class="container add-user">
+  <h2>User Management</h2>
 
-<!-- Create User -->
-<div>
-  <input [(ngModel)]="newUser.name" placeholder="Name" />
-  <input [(ngModel)]="newUser.email" placeholder="Email" />
-  <input [(ngModel)]="newUser.bio" placeholder="Bio" />
-  <button (click)="addUser()">Add User</button>
-</div>
+  <!-- Create User -->
+  <div>
+    <input [(ngModel)]="newUser.name" placeholder="Name" />
+    <input [(ngModel)]="newUser.email" placeholder="Email" />
+    <input [(ngModel)]="newUser.bio" placeholder="Bio" />
+    <button (click)="addUser()">Add User</button>
+  </div>
 
-<!-- User List -->
-<ul>
-  <li *ngFor="let user of users">
-    <span>{{ user.name }} ({{ user.email }}) - {{ user.bio }}</span>
-    <button (click)="editUserDetails(user)">Edit</button>
-    <button (click)="deleteUser(user.id)">Delete</button>
-  </li>
-</ul>
+  <!-- User List -->
+  <ul>
+    <li *ngFor="let user of users">
+      <span>{{ user.name }} ({{ user.email }}) - {{ user.bio }}</span>
+      <button (click)="editUserDetails(user)">Edit</button>
+      <button (click)="deleteUser(user.id)">Delete</button>
+    </li>
+  </ul>
 
-<!-- Edit User -->
-<div *ngIf="editUser">
-  <input [(ngModel)]="editUser.name" />
-  <input [(ngModel)]="editUser.email" />
-  <input [(ngModel)]="editUser.bio" />
-  <button (click)="updateUser()">Update</button>
+  <!-- Edit User -->
+  <div *ngIf="editUser">
+    <input [(ngModel)]="editUser.name" />
+    <input [(ngModel)]="editUser.email" />
+    <input [(ngModel)]="editUser.bio" />
+    <button (click)="updateUser()">Update</button>
+  </div>
 </div>

@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from './users.service';
+import { UsersService } from './users.service';
+import { FormsModule } from '@angular/forms';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
+  imports: [FormsModule, NgIf, NgFor],
   selector: 'app-users',
+  standalone: true,
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css'],
 })
@@ -11,39 +15,38 @@ export class UsersComponent implements OnInit {
   newUser = { name: '', email: '', bio: '' };
   editUser: any = null;
 
-  constructor(private userService: UserService) {}
+  constructor(private usersService: UsersService) {}
 
   async ngOnInit() {
-    await this.loadUsers();
+    await this.fetchUsers();
   }
 
-  /** ✅ Load all users */
-  async loadUsers() {
-    this.users = await this.userService.getUsers();
+  async fetchUsers() {
+    this.users = await this.usersService.getUsers();
   }
-
-  /** ✅ Create user */
+ 
   async addUser() {
-    await this.userService.createUser(this.newUser);
-    this.newUser = { name: '', email: '', bio: '' };
-    await this.loadUsers();
+    if (this.newUser.name && this.newUser.email && this.newUser.bio) {
+      await this.usersService.addUser(this.newUser);
+      this.newUser = { name: '', email: '', bio: '' };
+      await this.fetchUsers();
+    }
   }
 
-  /** ✅ Select user for editing */
-  editUserDetails(user: any) {
+  async editUserDetails(user: any) {
     this.editUser = { ...user };
   }
 
-  /** ✅ Update user */
   async updateUser() {
-    await this.userService.updateUser(this.editUser.id, this.editUser);
-    this.editUser = null;
-    await this.loadUsers();
+    if (this.editUser.name && this.editUser.email && this.editUser.bio) {
+      await this.usersService.updateUser(this.editUser.id, this.editUser);
+      this.editUser = null;
+      await this.fetchUsers();
+    }
   }
 
-  /** ✅ Delete user */
   async deleteUser(id: string) {
-    await this.userService.deleteUser(id);
-    await this.loadUsers();
+    await this.usersService.deleteUser(id);
+    await this.fetchUsers();
   }
 }
