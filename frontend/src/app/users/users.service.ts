@@ -10,25 +10,33 @@ export class UsersService {
   // 🔹 Get All Users
   async getUsers() {
     try {
+      console.log('Fetching users from:', `${API_URL}/users`);
+
       const response = await fetch(`${API_URL}/users`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      return await response.json();
+      const data = await response.json();
+      console.log('API Response:', data); // 🔹 Debugging
+
+      // 🔹 Ensure it returns an array
+      return Array.isArray(data) ? data : data.users || [];
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      console.error('Fetch error in getUsers:', error);
+      throw new Error(`HTTP error: ${(error as Error).message}`);
     }
   }
 
   // 🔹 Create User
   async addUser(user: { name: string; email: string; bio: string }) {
     try {
+      console.log('Adding user:', user);
+
       const response = await fetch(`${API_URL}/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -36,13 +44,13 @@ export class UsersService {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       return await response.json();
     } catch (error) {
-      console.error('Error:', error);
-      throw error;
+      console.error('Fetch error in addUser:', error);
+      throw new Error(`HTTP error: ${(error as Error).message}`);
     }
   }
 
@@ -51,16 +59,43 @@ export class UsersService {
     id: string,
     user: { name: string; email: string; bio: string }
   ) {
-    const response = await fetch(`${API_URL}/users/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user),
-    });
-    return response.json();
+    try {
+      console.log(`Updating user with ID: ${id}`);
+
+      const response = await fetch(`${API_URL}/users/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Fetch error in updateUser:', error);
+      throw new Error(`HTTP error: ${(error as Error).message}`);
+    }
   }
 
   // 🔹 Delete User
   async deleteUser(id: string) {
-    await fetch(`${API_URL}/users/${id}`, { method: 'DELETE' });
+    try {
+      console.log(`Deleting user with ID: ${id}`);
+
+      const response = await fetch(`${API_URL}/users/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Fetch error in deleteUser:', error);
+      throw new Error(`HTTP error: ${(error as Error).message}`);
+    }
   }
 }

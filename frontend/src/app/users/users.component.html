@@ -1,16 +1,18 @@
-<div class="container add-user">
+<div class="container">
   <h2>User Management</h2>
 
-  <!-- Create User -->
-  <div>
-    <input [(ngModel)]="newUser.name" placeholder="Name" />
-    <input [(ngModel)]="newUser.email" placeholder="Email" />
-    <input [(ngModel)]="newUser.bio" placeholder="Bio" />
+  <!-- Create User Form -->
+  <div class="form-container">
+    <h3>Add New User</h3>
+    <input [(ngModel)]="newUser.name" placeholder="Name" required />
+    <input [(ngModel)]="newUser.email" placeholder="Email" required />
+    <input [(ngModel)]="newUser.bio" placeholder="Bio" required />
     <button (click)="addUser()">Add User</button>
   </div>
 
   <!-- User List -->
-  <ul>
+  <h3>User List</h3>
+  <ul *ngIf="users.length > 0; else noUsers">
     <li *ngFor="let user of users">
       <span>{{ user.name }} ({{ user.email }}) - {{ user.bio }}</span>
       <button (click)="editUserDetails(user)">Edit</button>
@@ -18,11 +20,18 @@
     </li>
   </ul>
 
-  <!-- Edit User -->
-  <div *ngIf="editUser">
-    <input [(ngModel)]="editUser.name" />
-    <input [(ngModel)]="editUser.email" />
-    <input [(ngModel)]="editUser.bio" />
+  <!-- Message when no users are available -->
+  <ng-template #noUsers>
+    <p>No users available.</p>
+  </ng-template>
+
+  <!-- Edit User Form -->
+  <div class="form-container" *ngIf="editUser">
+    <h3>Edit User</h3>
+    <input [(ngModel)]="editUser.name" required />
+    <input [(ngModel)]="editUser.email" required />
+    <input [(ngModel)]="editUser.bio" required />
     <button (click)="updateUser()">Update</button>
+    <button (click)="editUser = null">Cancel</button>
   </div>
 </div>

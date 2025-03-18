@@ -18,18 +18,30 @@ export class UsersComponent implements OnInit {
   constructor(private usersService: UsersService) {}
 
   async ngOnInit() {
+    console.log('ngOnInit called'); // ✅ Debugging
     await this.fetchUsers();
   }
 
   async fetchUsers() {
-    this.users = await this.usersService.getUsers();
+    console.log('Fetching users...');
+    try {
+      this.users = await this.usersService.getUsers();
+      console.log('Users received:', this.users); // ✅ Debugging users
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
   }
- 
+
   async addUser() {
     if (this.newUser.name && this.newUser.email && this.newUser.bio) {
-      await this.usersService.addUser(this.newUser);
-      this.newUser = { name: '', email: '', bio: '' };
-      await this.fetchUsers();
+      try {
+        const addedUser = await this.usersService.addUser(this.newUser);
+        this.users = [...this.users, addedUser]; // ✅ Update the array immediately
+        // this.newUser = { name: '', email: '', bio: '' };
+        // await this.fetchUsers();
+      } catch (error) {
+        console.error('Error adding user:', error);
+      }
     }
   }
 
@@ -39,14 +51,24 @@ export class UsersComponent implements OnInit {
 
   async updateUser() {
     if (this.editUser.name && this.editUser.email && this.editUser.bio) {
-      await this.usersService.updateUser(this.editUser.id, this.editUser);
-      this.editUser = null;
-      await this.fetchUsers();
+      try {
+        await this.usersService.updateUser(this.editUser.id, this.editUser);
+        await this.fetchUsers(); // ✅ Refetch updated users
+        this.editUser = null;
+      } catch (error) {
+        console.error('Error updating user:', error);
+      }
     }
   }
 
   async deleteUser(id: string) {
-    await this.usersService.deleteUser(id);
-    await this.fetchUsers();
+    try {
+      console.log(`Deleting user with ID: ${id}`);
+      await this.usersService.deleteUser(id);
+      console.log(`User ${id} deleted successfully`);
+      await this.fetchUsers(); // ✅ Refresh user list
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
   }
 }

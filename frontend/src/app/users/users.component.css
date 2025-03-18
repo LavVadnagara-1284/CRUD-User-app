@@ -1,29 +1,23 @@
 .container {
-    max-width: 500px;
+    width: 400px;
     margin: auto;
     text-align: center;
-}
-
-.add-user input {
+  }
+  
+  .form-container {
+    margin-bottom: 20px;
+  }
+  
+  input {
     display: block;
-    width: 100%;
-    margin: 5px 0;
+    width: 90%;
+    margin: 5px auto;
     padding: 8px;
-}
-
-button {
-    margin-top: 10px;
-    padding: 8px;
+  }
+  
+  button {
+    margin: 5px;
+    padding: 8px 12px;
     cursor: pointer;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    margin: 10px 0;
-    padding: 10px;
-    border: 1px solid #ccc;
-}
+  }
+  

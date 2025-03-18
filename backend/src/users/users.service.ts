@@ -50,10 +50,11 @@ export class UserService implements OnModuleInit, OnModuleDestroy {
     try {
       const query = `SELECT * FROM \`${process.env.COUCHBASE_BUCKET}\`.\`${process.env.COUCHBASE_SCOPE}\`.\`${process.env.COUCHBASE_COLLECTION}\``;
       const result = await this.cluster.query(query);
-      return {
-        message: 'Users fetched successfully',
-        data: result.rows,
-      };
+      // return {
+      //   message: 'Users fetched successfully',
+      //   data: result.rows,
+      // };
+      return result.rows;
     } catch (error) {
       console.error('❌ Failed to fetch Users:', error);
       throw error;
