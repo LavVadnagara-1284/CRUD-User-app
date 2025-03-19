@@ -24,8 +24,12 @@ export class UsersService {
       const data = await response.json();
       console.log('API Response:', data); // 🔹 Debugging
 
+      const users = data.map((item: any) => item.users_collection)
+      console.log('Processed users:', users);
+      
+
       // 🔹 Ensure it returns an array
-      return Array.isArray(data) ? data : data.users || [];
+      return users;
     } catch (error) {
       console.error('Fetch error in getUsers:', error);
       throw new Error(`HTTP error: ${(error as Error).message}`);

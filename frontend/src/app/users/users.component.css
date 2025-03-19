@@ -1,23 +1,28 @@
 .container {
-    width: 400px;
-    margin: auto;
-    text-align: center;
-  }
-  
-  .form-container {
-    margin-bottom: 20px;
-  }
-  
-  input {
-    display: block;
-    width: 90%;
-    margin: 5px auto;
-    padding: 8px;
-  }
-  
-  button {
-    margin: 5px;
-    padding: 8px 12px;
-    cursor: pointer;
-  }
-  
+  width: 400px;
+  margin: auto;
+  text-align: center;
+}
+
+.form-container {
+  margin-bottom: 20px;
+}
+
+input {
+  display: block;
+  width: 90%;
+  margin: 5px auto;
+  padding: 8px;
+}
+
+button {
+  margin: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.navbar ul li {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+}

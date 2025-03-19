@@ -23,13 +23,26 @@ export class UsersComponent implements OnInit {
   }
 
   async fetchUsers() {
-    console.log('Fetching users...');
+    console.log('Fetching users...'); // ✅ Debugging
+
     try {
-      this.users = await this.usersService.getUsers();
-      console.log('Users received:', this.users); // ✅ Debugging users
+      const data = await this.usersService.getUsers();
+      console.log('Raw API Response:', data); // ✅ See exactly what is returned
+
+      if (!Array.isArray(data)) {
+        console.error('Unexpected API response format:', data);
+        return;
+      }
+
+      this.users = data;
+      console.log('Users after processing:', this.users); // ✅ Verify final assignment
     } catch (error) {
       console.error('Error fetching users:', error);
     }
+  }
+
+  async showUser() {
+    this.addUser();
   }
 
   async addUser() {
